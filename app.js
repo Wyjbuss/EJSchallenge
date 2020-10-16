@@ -12,6 +12,8 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 const app = express();
 const port = process.env.PORT || 3000
 
+let posts = [];
+
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({
@@ -21,12 +23,39 @@ app.use(express.static("public"));
 
 
 app.get('/', function(req, res) {
-	res.render(`post.ejs`, {
-		startingContent: homeStartingContent
+	res.render(`home.ejs`, {
+		startingContent: homeStartingContent,
+		posts: posts
+	});
+});
+app.get('/about', function(req, res) {
+	res.render(`about.ejs`, {
+		startingContent: aboutContent
 	})
 });
+app.get('/contact', function(req, res) {
+	res.render(`contact.ejs`, {
+		startingContent: contactContent
+	})
+});
+app.get('/compose', function(req, res) {
+	res.render(`compose.ejs`, {
 
+	})
+});
+app.post('/compose', function(req, res) {
+	const content = req.body.composedPost;
+	const title = req.body.composedTitle;
 
+	const post = {
+		title: title,
+		body: content
+	};
+
+	posts.push(post);
+
+	res.redirect('/');
+});
 
 
 
